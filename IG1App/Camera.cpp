@@ -1,0 +1,260 @@
+﻿#include "Shader.h"
+#include "Camera.h"
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include <glm/gtc/matrix_access.hpp>
+using namespace glm;
+
+Camera::Camera(Viewport* vp)
+    : mViewMat(1.0)
+    , mProjMat(1.0)
+    , xRight(vp->width() / 2.0)
+    , xLeft(-xRight)
+    , yTop(vp->height() / 2.0)
+    , yBot(-yTop)
+    , mViewPort(vp)
+{
+    setPM();
+}
+
+void Camera::setAxes()
+{
+    mRight = row(mViewMat,0);
+    mUpward = row(mViewMat, 1);
+    mFront = -row(mViewMat, 2);
+}
+
+void Camera::setVM()
+{
+    mViewMat = lookAt(mEye, mLook, mUp);
+    setAxes();
+}
+
+
+void Camera::set2D()
+{
+    // Posición original del proyecto IG1
+    mEye = glm::vec3(0.0f, 0.0f, 500.0f);
+    mLook = glm::vec3(0.0f, 0.0f, 0.0f);
+    //mUpward = glm::vec3(0.0f, 1.0f, 0.0f);
+    mUp = glm::vec3(0.0f, 1.0f, 0.0f);
+    // Cálculo coherente de radio y ángulo
+    glm::vec3 v = mEye - mLook;
+    mRadio = glm::length(v);
+    mAng = atan2(v.z, v.x);
+
+    setVM();
+    setPM();
+}
+
+
+void Camera::set3D()
+{
+    // Posición original del proyecto IG1
+    mEye = glm::vec3(500.0f, 500.0f, 500.0f);
+    mLook = glm::vec3(0.0f, 0.0f, 0.0f);
+    //mUpward = glm::vec3(0.0f, 1.0f, 0.0f);
+    mUp = glm::vec3(0.0f, 1.0f, 0.0f);
+    // Cálculo coherente de radio y ángulo
+    glm::vec3 v = mEye - mLook;
+    mRadio = glm::length(v);
+    mAng = atan2(v.z, v.x);
+
+    setVM();
+    setPM();
+}
+
+
+void Camera::pitch(GLfloat a)
+{
+    mViewMat = rotate(mViewMat, radians(a), vec3(1.0, 0, 0));
+    setAxes();//Lo pide el Apartado 39
+}
+
+void Camera::yaw(GLfloat a)
+{
+    mViewMat = rotate(mViewMat, radians(a), vec3(0, 1.0, 0));
+    setAxes();//Lo pide el Apartado 39
+}
+
+void Camera::roll(GLfloat a)
+{
+    mViewMat = rotate(mViewMat, radians(a), vec3(0, 0, 1.0));
+    setAxes();// Apartado 39
+}
+void Camera::moveLR(GLfloat cs)//Apartado 40
+{
+    mEye += cs * mRight;
+    mLook += cs * mRight;
+    setVM();
+}
+void Camera::moveFB(GLfloat cs)//Apartado 40
+{
+    mEye += cs * mFront;
+    mLook += cs * mFront;
+    setVM();
+}
+void Camera::moveUD(GLfloat cs)//Apartado 40
+{
+    mEye += cs * mUpward;
+    mLook += cs * mUpward;
+    setVM();
+}
+
+void Camera::setSize(GLdouble xw, GLdouble yh)
+{
+    xRight = xw / 2.0;
+    xLeft = -xRight;
+    yTop = yh / 2.0;
+    yBot = -yTop;
+    setPM();
+}
+
+
+
+void Camera::setScale(GLdouble s)
+{
+    mScaleFact -= s;
+    if (mScaleFact < 0)
+        mScaleFact = 0.01;
+
+    setPM();   // recalcula la proyección con el nuevo zoom Apartado 42
+}
+
+
+
+void Camera::setPM()
+{
+    if (bOrto) {
+        // Proyección ortogonal — usa mScaleFact para el zoom
+        mProjMat = ortho(xLeft * mScaleFact,
+            xRight * mScaleFact,
+            yBot * mScaleFact,
+            yTop * mScaleFact,
+            mNearVal, mFarVal);
+    }
+    else {
+        float aspect = mViewPort->width() / float(mViewPort->height());
+
+        //FOV escalado con mScaleFact: más pequeño = zoom in, más grande = zoom out
+        float fov = glm::clamp(
+            glm::radians(50.0f) * static_cast<float>(mScaleFact),
+            glm::radians(5.0f),    // límite mínimo (zoom in)
+            glm::radians(170.0f)   // límite máximo (zoom out)
+        );
+
+        mProjMat = glm::perspective(fov, aspect, mNearVal, mFarVal);
+    }
+}
+
+void Camera::changePrj()//Apartadp 41
+{
+    bOrto = !bOrto;   // alterna entre ortogonal y perspectiva
+    setPM();          // recalcula la matriz de proyección
+}
+
+
+
+// Apartado 45
+void Camera::pitchReal(GLfloat cs)
+{
+    float dist = glm::length(mLook - mEye);  // preservar distancia ojo-objetivo
+    glm::mat4 R = glm::rotate(glm::mat4(1.0f), glm::radians(cs), mRight);
+    mFront = glm::normalize(glm::vec3(R * glm::vec4(mFront, 0.0f)));
+    mUpward = glm::normalize(glm::vec3(R * glm::vec4(mUpward, 0.0f)));
+    mUp = mUpward;
+    mLook = mEye + mFront * dist;  //  mantener distancia original
+    setVM();
+}
+
+void Camera::yawReal(GLfloat cs)
+{
+    float dist = glm::length(mLook - mEye);  // preservar distancia ojo-objetivo
+    glm::mat4 R = glm::rotate(glm::mat4(1.0f), glm::radians(cs), mUpward);
+    mFront = glm::normalize(glm::vec3(R * glm::vec4(mFront, 0.0f)));
+    mRight = glm::normalize(glm::vec3(R * glm::vec4(mRight, 0.0f)));
+    mUp = mUpward;
+    mLook = mEye + mFront * dist;  //  mantener distancia original
+    setVM();
+}
+
+void Camera::rollReal(GLfloat cs)
+{
+    // mFront no cambia  mLook no cambia  distancia se preserva sola
+    glm::mat4 R = glm::rotate(glm::mat4(1.0f), glm::radians(cs), mFront);
+    mRight = glm::normalize(glm::vec3(R * glm::vec4(mRight, 0.0f)));
+    mUpward = glm::normalize(glm::vec3(R * glm::vec4(mUpward, 0.0f)));
+    mUp = mUpward;
+    setVM();
+}
+//Apartado 46
+void Camera::orbit(GLfloat incAng, GLfloat incY)
+{
+    // Vector desde el punto de interés (mLook) hasta la cámara (mEye)
+    glm::vec3 v = mEye - mLook;
+
+    // Ángulo actual en el plano XZ
+    GLfloat ang = atan2(v.z, v.x);
+
+    // Aumentar el ángulo
+    ang += glm::radians(incAng);
+
+    // Radio de la órbita
+    GLfloat r = glm::length(glm::vec2(v.x, v.z));
+
+    // Nueva posición XZ
+    v.x = r * cos(ang);
+    v.z = r * sin(ang);
+
+    // Ajustar altura Y
+    v.y += incY;
+
+    // Nueva posición de la cámara
+    mEye = mLook + v;
+
+    // Recalcular ejes de la cámara
+    mFront = glm::normalize(mLook - mEye);
+    mRight = glm::normalize(glm::cross(mFront, glm::vec3(0, 1, 0)));
+    mUpward = glm::normalize(glm::cross(mRight, mFront));
+    mUp = glm::vec3(0.0f, 1.0f, 0.0f);
+    setVM();
+}
+//void Camera::setCenital()//Apartado 48
+//{
+//    // Colocar la cámara justo encima del punto de interés
+//    mEye = mLook + glm::vec3(0.0f, 500.0f, 0.0f);  // altura cenital
+//
+//    // Mirar hacia abajo
+//    mUpward = glm::vec3(0.0f, 0.0f, -1.0f);        // Up coherente para vista cenital
+//
+//    // Calcular radio y ángulo
+//    glm::vec3 v = mEye - mLook;
+//    mRadio = glm::length(v);
+//    mAng = atan2(v.z, v.x);
+//
+//    setVM();
+//    setPM();
+//}
+
+void Camera::setCenital()// Apartado 49
+{
+    mEye = mLook + glm::vec3(0.0f, 500.0f, 0.0f);
+    mUp = glm::vec3(0.0f, 0.0f, -1.0f);  //  mUp
+    glm::vec3 v = mEye - mLook;
+    mRadio = glm::length(v);
+    mAng = atan2(v.z, v.x);
+    setVM();
+    setPM();
+}
+
+void Camera::uploadPM() const
+{
+    Shader::setGlobals(mProjMat);
+}
+
+void Camera::upload() const
+{
+    mViewPort->upload();
+    uploadPM();
+}
