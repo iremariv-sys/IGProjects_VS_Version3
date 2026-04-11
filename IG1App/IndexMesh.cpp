@@ -128,52 +128,43 @@ IndexMesh* IndexMesh::generateByRevolution(
 
 	const GLuint nProfile = GLuint(profile.size());
 
-	// 1. Reservar memoria para evitar reasignaciones
-	m->vVertices.reserve((nSamples + 1) * nProfile);
-	m->vIndexes.reserve(nSamples * (nProfile - 1) * 6);
+	m->vVertices.reserve(nSamples * nProfile);
+	m->vIndexes.reserve(nSamples * nProfile * 6);
 
-	// 2. Generar vértices por revolución
-	for (GLuint i = 0; i <= nSamples; ++i) {
+	for (GLuint i = 0; i < nSamples; ++i) {
 		GLfloat ang = angleMax * GLfloat(i) / GLfloat(nSamples);
 		GLfloat c = cos(ang);
 		GLfloat s = sin(ang);
 
-		for (const auto& p : profile) {
+		for (const glm::vec2& p : profile) {
 			m->vVertices.emplace_back(p.x * c, p.y, p.x * s);
 		}
 	}
 
-	// 3. Generar índices para conectar los vértices
 	for (GLuint i = 0; i < nSamples; ++i) {
 		GLuint curr = i * nProfile;
-		GLuint next = (i + 1) * nProfile;
+		GLuint next = ((i + 1) % nSamples) * nProfile;
 
-		for (GLuint j = 0; j + 1 < nProfile; ++j) {
+		for (GLuint j = 0; j < nProfile; ++j) {
+			GLuint j2 = (j + 1) % nProfile;
+
 			GLuint a = curr + j;
 			GLuint b = next + j;
-			GLuint c = next + j + 1;
-			GLuint d = curr + j + 1;
+			GLuint c = next + j2;
+			GLuint d = curr + j2;
 
-			// Triángulo 1
 			m->vIndexes.push_back(a);
 			m->vIndexes.push_back(b);
 			m->vIndexes.push_back(c);
 
-			// Triángulo 2
 			m->vIndexes.push_back(a);
 			m->vIndexes.push_back(c);
 			m->vIndexes.push_back(d);
 		}
 	}
 
-	// 4. PREPARACIÓN FINAL (Orden crítico)
 	m->mNumVertices = GLuint(m->vVertices.size());
-
-	// Primero calculamos las normales en la CPU (Apartado 58)
 	m->buildNormalVectors();
-
-
-
 	return m;
 }
 
