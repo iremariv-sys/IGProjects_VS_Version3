@@ -67,6 +67,7 @@ IG1App::init()
 	mScenes.push_back(new Scene2);
 	mScenes.push_back(new Scene3);
 	mScenes.push_back(new Scene4);
+	mScenes.push_back(new Scene5);
 
 	mCamera->set2D();
 	mCamera2->set2D();
@@ -76,6 +77,7 @@ IG1App::init()
 	mScenes[2]->init();
 	mScenes[3]->init();
 	mScenes[4]->init();
+	mScenes[5]->init();
 	//mScenes[mCurrentScene]->load();
 
 	// Cargar todas en GPU 
@@ -84,6 +86,7 @@ IG1App::init()
 	mScenes[2]->load();
 	mScenes[3]->load();
 	mScenes[4]->load();
+	mScenes[5]->load();
 }
 void
 IG1App::iniWinOpenGL()
@@ -502,3 +505,4 @@ size_t IG1App::activeSceneIdx() const
 	glfwGetCursorPos(mWindow, &cx, &cy);
 	return (cx < mWinW / 2) ? 4u : 2u;
 }
+

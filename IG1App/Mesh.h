@@ -36,8 +36,12 @@ public:
 	std::vector<glm::vec4> const& colors() const { return vColors; };
 	std::vector<glm::vec2> const& texCoords() const { return vTexCoords; };
 
-	void load();
-	void unload();
+	//void load();
+	//void unload();
+	//Apartado 54
+	virtual void load();
+	virtual void unload();
+	// void draw() const;
 
 protected:
 	GLuint mPrimitive =
@@ -47,6 +51,7 @@ protected:
 	std::vector<glm::vec3> vVertices; // vertex array
 	std::vector<glm::vec4> vColors;   // color array
 	std::vector<glm::vec2> vTexCoords; // Añadido: coordenadas de textura
+	std::vector<glm::vec3> vNormals; // Añadido: normales Apartado 57
 	virtual void draw() const;
 
 	GLuint mVAO;  // vertex array object
@@ -56,6 +61,7 @@ private:
 	GLuint mCBO;  // color buffer object
 	GLuint mTBO;  // texture coordinate buffer object (añadido)
 	GLuint mTCO;
+	GLuint mNBO;
 };
 
 #endif //_H_Scene_H_

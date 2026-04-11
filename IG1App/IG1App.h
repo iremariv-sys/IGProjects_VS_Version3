@@ -4,7 +4,7 @@
 #include <glad/glad.h>    // OpenGL loader library
 #include <GLFW/glfw3.h>  // OpenGL Library
 #include <glm/glm.hpp>   // OpenGL Mathematics
-
+#include "Material.h"
 #include "Camera.h"
 #include "Scene.h"
 #include "Viewport.h"
@@ -12,6 +12,7 @@
 #include "Scene2.h"
 #include "Scene3.h"
 #include "Scene4.h"
+#include "Scene5.h"
 
 class IG1App
 {
@@ -28,6 +29,7 @@ public:
 	Camera const& camera();
 	// Graphics objects of the scene
 	Scene const& scene();
+
 
 	// Change to the given scene
 	bool changeScene(size_t sceneNr);

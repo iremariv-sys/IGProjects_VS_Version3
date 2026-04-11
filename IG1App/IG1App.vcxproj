@@ -75,12 +75,14 @@
     <ClInclude Include="Box.h" />
     <ClInclude Include="BoxOutline.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ColorMaterialEntity.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityWithTexture.h" />
     <ClInclude Include="GlassParapet.h" />
     <ClInclude Include="Grass.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="IG1App.h" />
+    <ClInclude Include="IndexMesh.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Photo.h" />
@@ -93,21 +95,25 @@
     <ClInclude Include="Scene2.h" />
     <ClInclude Include="Scene3.h" />
     <ClInclude Include="Scene4.h" />
+    <ClInclude Include="Scene5.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SingleColorEntity.h" />
     <ClInclude Include="Star3D.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Torus.h" />
     <ClInclude Include="Viewport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="BoxOutline.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ColorMaterialEntity.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityWithTexture.cpp" />
     <ClCompile Include="GlassParapet.cpp" />
     <ClCompile Include="Grass.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="IndexMesh.cpp" />
     <ClCompile Include="Photo.cpp" />
     <ClCompile Include="RegularPolygon.cpp" />
     <ClCompile Include="IG1App.cpp" />
@@ -122,10 +128,12 @@
     <ClCompile Include="Scene2.cpp" />
     <ClCompile Include="Scene3.cpp" />
     <ClCompile Include="Scene4.cpp" />
+    <ClCompile Include="Scene5.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SingleColorEntity.cpp" />
     <ClCompile Include="Star3D.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Torus.cpp" />
     <ClCompile Include="Viewport.cpp" />
     <ClCompile Include="..\libs\glad\src\glad.c" />
   </ItemGroup>

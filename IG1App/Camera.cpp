@@ -253,8 +253,33 @@ void Camera::uploadPM() const
     Shader::setGlobals(mProjMat);
 }
 
+//void Camera::upload() const
+//{
+//    mViewPort->upload();
+//    uploadPM();
+//}
+
+//void Camera::upload() const
+//{
+//    mViewPort->upload();
+//    uploadPM();
+//
+//    Shader* lightShader = Shader::get("simple_light");
+//    lightShader->use();
+//    lightShader->setUniform(
+//        "lightDir",
+//        mViewMat * glm::vec4(-1.0f, -1.5f, -1.25f, 0.0f));
+//}
 void Camera::upload() const
 {
     mViewPort->upload();
     uploadPM();
+
+    Shader* lightShader = Shader::get("simple_light");
+    lightShader->use();
+
+    glm::vec4 lightDirView = mViewMat * glm::vec4(-1.0f, -1.5f, -1.25f, 0.0f);
+    lightDirView = glm::vec4(glm::normalize(glm::vec3(lightDirView)), 0.0f);
+
+    lightShader->setUniform("lightDir", lightDirView);
 }

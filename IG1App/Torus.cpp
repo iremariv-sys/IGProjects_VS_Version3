@@ -1,0 +1,46 @@
+//#include "Torus.h"
+//#include "IndexMesh.h"
+//
+//#include <cmath>
+//
+//using namespace glm;
+//
+//Torus::Torus(GLdouble R, GLdouble r, GLuint nPoints, GLuint nSamples)
+//	: SingleColorEntity(vec4(1.0f, 1.0f, 1.0f, 1.0f))
+//{
+//	const GLdouble pi = 3.14159265358979323846;
+//	std::vector<glm::vec2> profile;
+//	profile.reserve(nPoints + 1);
+//
+//	for (GLuint i = 0; i <= nPoints; ++i) {
+//		GLdouble a = 2.0 * pi * GLdouble(i) / GLdouble(nPoints);
+//		GLdouble x = R + r * cos(a);
+//		GLdouble y = r * sin(a);
+//		profile.emplace_back(GLfloat(x), GLfloat(y));
+//	}
+//
+//	mMesh = IndexMesh::generateByRevolution(profile, nSamples);
+//}
+
+#include "Torus.h"
+#include "IndexMesh.h"
+#include <cmath>
+#include <glm/gtc/constants.hpp>
+
+using namespace glm;
+
+Torus::Torus(GLdouble R, GLdouble r, GLuint nPoints, GLuint nSamples)
+	: ColorMaterialEntity(vec4(0.0f, 1.0f, 0.0f, 1.0f))
+{
+	std::vector<glm::vec2> profile;
+	profile.reserve(nPoints + 1);
+
+	for (GLuint i = 0; i <= nPoints; ++i) {
+		GLdouble a = glm::two_pi<double>() * GLdouble(i) / GLdouble(nPoints);
+		GLdouble x = R + r * cos(a);
+		GLdouble y = r * sin(a);
+		profile.emplace_back(GLfloat(x), GLfloat(y));
+	}
+
+	mMesh = IndexMesh::generateByRevolution(profile, nSamples);
+}
