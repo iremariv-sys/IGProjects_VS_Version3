@@ -51,6 +51,11 @@ Shader::Shader(const string& name)
 
 	glLinkProgram(mProgram);
 
+	//add
+	GLuint block = glGetUniformBlockIndex(mProgram, "Globals");
+	if (block != GL_INVALID_INDEX)
+		glUniformBlockBinding(mProgram, block, 2);
+
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
 }

@@ -1,8 +1,9 @@
 #include "IndexMesh.h"
-#include "Material.h"
 #include <cassert>
 #include <cmath>
 #include <limits>
+
+#include <glm/gtc/constants.hpp>
 
 using namespace std;
 using namespace glm;
@@ -118,7 +119,8 @@ void IndexMesh::unload()
 IndexMesh* IndexMesh::generateByRevolution(
 	const std::vector<glm::vec2>& profile,
 	GLuint nSamples,
-	GLfloat angleMax)
+   GLfloat angleMax,
+	bool closedProfile)
 {
 	assert(profile.size() >= 2);
 	assert(nSamples >= 1);
@@ -128,26 +130,32 @@ IndexMesh* IndexMesh::generateByRevolution(
 
 	const GLuint nProfile = GLuint(profile.size());
 
-	m->vVertices.reserve(nSamples * nProfile);
-	m->vIndexes.reserve(nSamples * nProfile * 6);
+  m->vVertices.reserve((nSamples + 1) * nProfile);
+	m->vIndexes.reserve(nSamples * (nProfile - 1) * 6);
+	m->vTexCoords.reserve((nSamples + 1) * nProfile);
 
-	for (GLuint i = 0; i < nSamples; ++i) {
+ for (GLuint i = 0; i <= nSamples; ++i) {
 		GLfloat ang = angleMax * GLfloat(i) / GLfloat(nSamples);
 		GLfloat c = cos(ang);
 		GLfloat s = sin(ang);
+		GLfloat u = GLfloat(i) / GLfloat(nSamples);
 
-		for (const glm::vec2& p : profile) {
+        for (GLuint j = 0; j < nProfile; ++j) {
+			const glm::vec2& p = profile[j];
+			GLfloat v = (nProfile > 1) ? GLfloat(j) / GLfloat(nProfile - 1) : 0.0f;
 			m->vVertices.emplace_back(p.x * c, p.y, p.x * s);
+			m->vTexCoords.emplace_back(u, v);
 		}
 	}
 
+    GLuint segmentCount = closedProfile ? nProfile : (nProfile - 1);
 	for (GLuint i = 0; i < nSamples; ++i) {
 		GLuint curr = i * nProfile;
+     //GLuint next = (i + 1) * nProfile;
 		GLuint next = ((i + 1) % nSamples) * nProfile;
 
-		for (GLuint j = 0; j < nProfile; ++j) {
-			GLuint j2 = (j + 1) % nProfile;
-
+         for (GLuint j = 0; j < segmentCount; ++j) {
+            GLuint j2 = closedProfile ? (j + 1) % nProfile : j + 1;
 			GLuint a = curr + j;
 			GLuint b = next + j;
 			GLuint c = next + j2;
@@ -166,6 +174,25 @@ IndexMesh* IndexMesh::generateByRevolution(
 	m->mNumVertices = GLuint(m->vVertices.size());
 	m->buildNormalVectors();
 	return m;
+}
+
+IndexMesh* IndexMesh::generateSphere(GLdouble radius, GLuint nParallel, GLuint nMeridians)
+{
+	assert(nParallel >= 1);
+	assert(nMeridians >= 3);
+
+	std::vector<glm::vec2> profile;
+	profile.reserve(nParallel + 1);
+
+	for (GLuint i = 0; i <= nParallel; ++i) {
+		GLdouble t = GLdouble(i) / GLdouble(nParallel);
+		GLdouble ang = -glm::half_pi<GLdouble>() + t * glm::pi<GLdouble>();
+		GLdouble r = radius * cos(ang);
+		GLdouble y = radius * sin(ang);
+		profile.push_back(glm::vec2(r, y));
+	}
+
+	return generateByRevolution(profile, nMeridians);
 }
 
 
@@ -207,4 +234,81 @@ void IndexMesh::buildNormalVectors()
 		if (len > 0.0f)
 			n = -n / len;
 	}
+}
+// Apartado 64
+IndexMesh* IndexMesh::generateIndexedBox(GLdouble l)
+{
+	IndexMesh* m = new IndexMesh();
+	m->mPrimitive = GL_TRIANGLES;
+
+	GLfloat h = GLfloat(l / 2.0);
+
+	m->vVertices = {
+		// front
+		{-h, -h,  h}, { h, -h,  h}, { h,  h,  h}, {-h,  h,  h},
+		// right
+		{ h, -h,  h}, { h, -h, -h}, { h,  h, -h}, { h,  h,  h},
+		// back
+		{ h, -h, -h}, {-h, -h, -h}, {-h,  h, -h}, { h,  h, -h},
+		// left
+		{-h, -h, -h}, {-h, -h,  h}, {-h,  h,  h}, {-h,  h, -h},
+		// top
+		{-h,  h,  h}, { h,  h,  h}, { h,  h, -h}, {-h,  h, -h},
+		// bottom
+		{-h, -h, -h}, { h, -h, -h}, { h, -h,  h}, {-h, -h,  h}
+	};
+
+	m->vIndexes = {
+		0, 1, 2,  0, 2, 3,
+		4, 5, 6,  4, 6, 7,
+		8, 9, 10, 8, 10, 11,
+		12, 13, 14, 12, 14, 15,
+		16, 17, 18, 16, 18, 19,
+		20, 21, 22, 20, 22, 23
+	};
+
+	m->vNormals = {
+		{ 0.0f,  0.0f,  1.0f}, { 0.0f,  0.0f,  1.0f}, { 0.0f,  0.0f,  1.0f}, { 0.0f,  0.0f,  1.0f},
+		{ 1.0f,  0.0f,  0.0f}, { 1.0f,  0.0f,  0.0f}, { 1.0f,  0.0f,  0.0f}, { 1.0f,  0.0f,  0.0f},
+		{ 0.0f,  0.0f, -1.0f}, { 0.0f,  0.0f, -1.0f}, { 0.0f,  0.0f, -1.0f}, { 0.0f,  0.0f, -1.0f},
+		{-1.0f,  0.0f,  0.0f}, {-1.0f,  0.0f,  0.0f}, {-1.0f,  0.0f,  0.0f}, {-1.0f,  0.0f,  0.0f},
+		{ 0.0f,  1.0f,  0.0f}, { 0.0f,  1.0f,  0.0f}, { 0.0f,  1.0f,  0.0f}, { 0.0f,  1.0f,  0.0f},
+		{ 0.0f, -1.0f,  0.0f}, { 0.0f, -1.0f,  0.0f}, { 0.0f, -1.0f,  0.0f}, { 0.0f, -1.0f,  0.0f}
+	};
+
+	m->mNumVertices = GLuint(m->vVertices.size());
+	return m;
+}
+
+// Apartado 61
+IndexMesh* IndexMesh::generateIndexedBox8(GLdouble l)
+{
+	IndexMesh* m = new IndexMesh();
+	m->mPrimitive = GL_TRIANGLES;
+
+	GLfloat h = GLfloat(l / 2.0);
+
+	m->vVertices = {
+		{-h, -h,  h}, // 0
+		{ h, -h,  h}, // 1
+		{ h,  h,  h}, // 2
+		{-h,  h,  h}, // 3
+		{-h, -h, -h}, // 4
+		{ h, -h, -h}, // 5
+		{ h,  h, -h}, // 6
+		{-h,  h, -h}  // 7
+	};
+
+	m->vIndexes = {
+		0, 1, 2,  0, 2, 3, // front
+		1, 5, 6,  1, 6, 2, // right
+		5, 4, 7,  5, 7, 6, // back
+		4, 0, 3,  4, 3, 7, // left
+		3, 2, 6,  3, 6, 7, // top
+		4, 5, 1,  4, 1, 0  // bottom
+	};
+
+	m->mNumVertices = GLuint(m->vVertices.size());
+	m->buildNormalVectors();
+	return m;
 }

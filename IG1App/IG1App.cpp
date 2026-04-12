@@ -1,6 +1,7 @@
 ﻿#include "IG1App.h"
 #include <iostream>
 #include <thread>
+#include "ColorMaterialEntity.h"
 
 using namespace std;
 
@@ -68,6 +69,9 @@ IG1App::init()
 	mScenes.push_back(new Scene3);
 	mScenes.push_back(new Scene4);
 	mScenes.push_back(new Scene5);
+	mScenes.push_back(new Scene6);
+	mScenes.push_back(new Scene7);
+	
 
 	mCamera->set2D();
 	mCamera2->set2D();
@@ -78,6 +82,8 @@ IG1App::init()
 	mScenes[3]->init();
 	mScenes[4]->init();
 	mScenes[5]->init();
+	mScenes[6]->init();
+	mScenes[7]->init();
 	//mScenes[mCurrentScene]->load();
 
 	// Cargar todas en GPU 
@@ -87,6 +93,8 @@ IG1App::init()
 	mScenes[3]->load();
 	mScenes[4]->load();
 	mScenes[5]->load();
+	mScenes[6]->load();
+	mScenes[7]->load();
 }
 void
 IG1App::iniWinOpenGL()
@@ -367,6 +375,11 @@ void IG1App::key(unsigned int key)
 
 	case 'e':
 		camera->orbit(0, -1);
+		mNeedsRedisplay = true;
+		break;
+	case 'n':
+	case 'N': // apartado 63
+		ColorMaterialEntity::toggleShowNormals();
 		mNeedsRedisplay = true;
 		break;
 
