@@ -71,7 +71,7 @@ IG1App::init()
 	mScenes.push_back(new Scene5);
 	mScenes.push_back(new Scene6);
 	mScenes.push_back(new Scene7);
-	
+	mScenes.push_back(new Scene8);
 
 	mCamera->set2D();
 	mCamera2->set2D();
@@ -84,6 +84,7 @@ IG1App::init()
 	mScenes[5]->init();
 	mScenes[6]->init();
 	mScenes[7]->init();
+	mScenes[8]->init();
 	//mScenes[mCurrentScene]->load();
 
 	// Cargar todas en GPU 
@@ -95,6 +96,7 @@ IG1App::init()
 	mScenes[5]->load();
 	mScenes[6]->load();
 	mScenes[7]->load();
+	mScenes[8]->load();
 }
 void
 IG1App::iniWinOpenGL()
@@ -203,6 +205,11 @@ IG1App::destroy()
 // aparatdo 52
 void IG1App::display() const
 {
+ if (!m2Vistas && mCurrentScene == 8)
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	else
+		glClearColor(0.6f, 0.7f, 0.8f, 1.0f);
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (!m2Vistas)

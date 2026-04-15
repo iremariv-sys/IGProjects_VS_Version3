@@ -51,22 +51,16 @@ void ColorMaterialEntity::render(mat4 const& modelViewMat) const
     upload(aMat);
     mMesh->render();
 
-    //if (mShowNormals) {
-    //    Shader* normalsShader = Shader::get("normals");
-    //    if (normalsShader != nullptr) {
-    //        normalsShader->use();
-    //        normalsShader->setUniform("modelView", aMat);
-    //        mMesh->render();
-    //    }
-    //}
+ 
     if (mShowNormals) {
         Shader* normalsShader = Shader::get("normals");
         if (normalsShader != nullptr) {
-            glDisable(GL_DEPTH_TEST);
+            glDepthMask(GL_FALSE);
             normalsShader->use();
             normalsShader->setUniform("modelView", aMat);
             mMesh->render();
-            glEnable(GL_DEPTH_TEST);
+            glDepthMask(GL_TRUE);
         }
+    
     }
 }

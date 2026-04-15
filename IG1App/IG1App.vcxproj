@@ -78,6 +78,7 @@
     <ClInclude Include="ColorMaterialEntity.h" />
     <ClInclude Include="CompoundEntity.h" />
     <ClInclude Include="Cone.h" />
+    <ClInclude Include="DathomirPlanet.h" />
     <ClInclude Include="Disk.h" />
     <ClInclude Include="Droid.h" />
     <ClInclude Include="Entity.h" />
@@ -103,6 +104,7 @@
     <ClInclude Include="Scene5.h" />
     <ClInclude Include="Scene6.h" />
     <ClInclude Include="Scene7.h" />
+    <ClInclude Include="Scene8.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SingleColorEntity.h" />
     <ClInclude Include="Sphere.h" />
@@ -119,6 +121,7 @@
     <ClCompile Include="ColorMaterialEntity.cpp" />
     <ClCompile Include="CompoundEntity.cpp" />
     <ClCompile Include="Cone.cpp" />
+    <ClCompile Include="DathomirPlanet.cpp" />
     <ClCompile Include="Disk.cpp" />
     <ClCompile Include="Droid.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -145,6 +148,7 @@
     <ClCompile Include="Scene5.cpp" />
     <ClCompile Include="Scene6.cpp" />
     <ClCompile Include="Scene7.cpp" />
+    <ClCompile Include="Scene8.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SingleColorEntity.cpp" />
     <ClCompile Include="Sphere.cpp" />

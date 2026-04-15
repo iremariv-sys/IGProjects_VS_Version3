@@ -4,7 +4,7 @@
 #include <vector>
 
 Cone::Cone(GLdouble h, GLdouble r, GLdouble R, GLuint nRings, GLuint nSamples)
-	: ColorMaterialEntity(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))
+	: ColorMaterialEntity(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f))
 {
 	std::vector<glm::vec2> profile;
 
