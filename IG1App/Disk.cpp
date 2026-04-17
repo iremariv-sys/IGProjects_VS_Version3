@@ -10,7 +10,7 @@ Disk::Disk(GLdouble R, GLdouble r, GLuint nRings, GLuint nSamples)
 
 	for (GLuint i = 0; i <= nRings; ++i) {
 		GLdouble t = (nRings == 0) ? 0.0 : GLdouble(i) / GLdouble(nRings);
-		GLdouble radius = r + (R - r) * t;
+		GLdouble radius = R + (r - R) * t;
 
 		profile.push_back(glm::vec2(radius, 0.0));
 	}

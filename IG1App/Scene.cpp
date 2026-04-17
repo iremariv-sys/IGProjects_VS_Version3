@@ -79,3 +79,13 @@ void Scene::update() {
 	for (Abs_Entity* obj : gObjects)
 		obj->update();
 }
+
+
+
+void Scene::rotate()
+{
+}
+
+void Scene::orbit()
+{
+}

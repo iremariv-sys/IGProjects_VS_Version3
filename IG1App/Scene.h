@@ -21,6 +21,10 @@ public:
 	virtual void init();
 	virtual void update(); //apartado 12
 
+	//apartado 69
+	virtual void rotate();
+	virtual void orbit();
+
 	virtual void render(Camera const& cam) const;
 
 	// load or unload scene data into the GPU

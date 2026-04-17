@@ -363,6 +363,21 @@ void IG1App::key(unsigned int key)
 		if (s && s->mPhoto)
 			s->savePhoto();
 	}
+	case 'f':
+	{
+		Scene8* s8 = dynamic_cast<Scene8*>(mScenes[mCurrentScene]);
+		if (s8 != nullptr)
+			s8->rotate();
+		break;
+	}
+
+	case 'g':
+	{
+		Scene8* s8 = dynamic_cast<Scene8*>(mScenes[mCurrentScene]);
+		if (s8 != nullptr)
+			s8->orbit();
+		break;
+	}
 	break;
 	//Apartado 46
 	case GLFW_KEY_A:
