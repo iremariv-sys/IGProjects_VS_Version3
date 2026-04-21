@@ -61,60 +61,6 @@ void IndexMesh::unload()
 	Mesh::unload();
 }
 
-//IndexMesh* IndexMesh::generateByRevolution(
-//	const std::vector<glm::vec2>& profile,
-//	GLuint nSamples,
-//	GLfloat angleMax)
-//{
-//	assert(profile.size() >= 2);
-//	assert(nSamples >= 1);
-//
-//	IndexMesh* m = new IndexMesh();
-//	m->mPrimitive = GL_TRIANGLES;
-//
-//	const GLuint nProfile = GLuint(profile.size());
-//
-//	// nSamples anillos + 1 para cerrar si angleMax = 2*pi
-//	m->vVertices.reserve((nSamples + 1) * nProfile);
-//	m->vIndexes.reserve(nSamples * (nProfile - 1) * 6);
-//
-//	for (GLuint i = 0; i <= nSamples; ++i) {
-//		GLfloat ang = angleMax * GLfloat(i) / GLfloat(nSamples);
-//		GLfloat c = cos(ang);
-//		GLfloat s = sin(ang);
-//
-//		for (const auto& p : profile) {
-//			GLfloat r = p.x;
-//			GLfloat y = p.y;
-//			m->vVertices.emplace_back(r * c, y, r * s);
-//		}
-//	}
-//
-//	for (GLuint i = 0; i < nSamples; ++i) {
-//		GLuint curr = i * nProfile;
-//		GLuint next = (i + 1) * nProfile;
-//
-//		for (GLuint j = 0; j + 1 < nProfile; ++j) {
-//			GLuint a = curr + j;
-//			GLuint b = next + j;
-//			GLuint c = next + j + 1;
-//			GLuint d = curr + j + 1;
-//
-//			m->vIndexes.push_back(a);
-//			m->vIndexes.push_back(b);
-//			m->vIndexes.push_back(c);
-//
-//			m->vIndexes.push_back(a);
-//			m->vIndexes.push_back(c);
-//			m->vIndexes.push_back(d);
-//		}
-//	}
-//
-//	m->mNumVertices = GLuint(m->vVertices.size());
-//	m->buildNormalVectors(); ////
-//	
-//	return m;
-//}
 
 IndexMesh* IndexMesh::generateByRevolution(
 	const std::vector<glm::vec2>& profile,

@@ -191,33 +191,32 @@ void Camera::rollReal(GLfloat cs)
 //Apartado 46
 void Camera::orbit(GLfloat incAng, GLfloat incY)
 {
-    // Vector desde el punto de interés (mLook) hasta la cámara (mEye)
     glm::vec3 v = mEye - mLook;
+    GLfloat dist = glm::length(v);
 
-    // Ángulo actual en el plano XZ
+    // Ángulo horizontal
     GLfloat ang = atan2(v.z, v.x);
-
-    // Aumentar el ángulo
     ang += glm::radians(incAng);
 
-    // Radio de la órbita
-    GLfloat r = glm::length(glm::vec2(v.x, v.z));
+    // Nueva altura, limitada para no colapsar la cámara
+    GLfloat y = v.y + incY;
+    GLfloat maxY = dist * 0.99f;
+    y = glm::clamp(y, -maxY, maxY);
 
-    // Nueva posición XZ
+    // Radio horizontal compatible con la distancia total
+    GLfloat r = sqrt(glm::max(dist * dist - y * y, 0.0f));
+
     v.x = r * cos(ang);
     v.z = r * sin(ang);
+    v.y = y;
 
-    // Ajustar altura Y
-    v.y += incY;
-
-    // Nueva posición de la cámara
     mEye = mLook + v;
 
-    // Recalcular ejes de la cámara
     mFront = glm::normalize(mLook - mEye);
     mRight = glm::normalize(glm::cross(mFront, glm::vec3(0, 1, 0)));
     mUpward = glm::normalize(glm::cross(mRight, mFront));
     mUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
     setVM();
 }
 //void Camera::setCenital()//Apartado 48

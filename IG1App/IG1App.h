@@ -16,6 +16,7 @@
 #include "Scene6.h"
 #include "Scene7.h"
 #include "Scene8.h"
+#include "Scene9.h"
 
 class IG1App
 {

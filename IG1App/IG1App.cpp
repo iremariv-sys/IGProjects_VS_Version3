@@ -72,6 +72,7 @@ IG1App::init()
 	mScenes.push_back(new Scene6);
 	mScenes.push_back(new Scene7);
 	mScenes.push_back(new Scene8);
+	mScenes.push_back(new Scene9);
 
 	mCamera->set2D();
 	mCamera2->set2D();
@@ -85,6 +86,7 @@ IG1App::init()
 	mScenes[6]->init();
 	mScenes[7]->init();
 	mScenes[8]->init();
+	mScenes[9]->init();
 	//mScenes[mCurrentScene]->load();
 
 	// Cargar todas en GPU 
@@ -97,6 +99,7 @@ IG1App::init()
 	mScenes[6]->load();
 	mScenes[7]->load();
 	mScenes[8]->load();
+	mScenes[9]->load();
 }
 void
 IG1App::iniWinOpenGL()
@@ -500,8 +503,8 @@ void IG1App::motion(double x, double y)
 	Camera* cam = mLeftVP ? mCamera : mCamera2;
 
 	if (mMouseButt == GLFW_MOUSE_BUTTON_RIGHT) {
-		cam->moveLR(static_cast<GLfloat>(delta.x) * 0.5f);
-		cam->moveUD(static_cast<GLfloat>(-delta.y) * 0.5f);
+		cam->moveLR(static_cast<GLfloat>(-delta.x) * 0.5f);
+		cam->moveUD(static_cast<GLfloat>(delta.y) * 0.5f);
 		mNeedsRedisplay = true;
 	}
 	else if (mMouseButt == GLFW_MOUSE_BUTTON_LEFT) {
