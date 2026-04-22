@@ -208,10 +208,12 @@ IG1App::destroy()
 // aparatdo 52
 void IG1App::display() const
 {
- if (!m2Vistas && mCurrentScene == 8)
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	else
-		glClearColor(0.6f, 0.7f, 0.8f, 1.0f);
+ //if (!m2Vistas && mCurrentScene == 8)
+	//	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	//else
+		//glClearColor(0.6f, 0.7f, 0.8f, 1.0f);
+	glm::vec4 bg = mScenes[mCurrentScene]->clearColor();
+	glClearColor(bg.r, bg.g, bg.b, bg.a);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -365,6 +367,7 @@ void IG1App::key(unsigned int key)
 		Scene4* s = dynamic_cast<Scene4*>(mScenes[mCurrentScene]);
 		if (s && s->mPhoto)
 			s->savePhoto();
+		break;
 	}
 	case 'f':
 	{

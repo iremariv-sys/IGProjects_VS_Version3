@@ -89,3 +89,8 @@ void Scene::rotate()
 void Scene::orbit()
 {
 }
+
+glm::vec4 Scene::clearColor() const
+{
+	return glm::vec4(0.6f, 0.7f, 0.8f, 1.0f);
+}

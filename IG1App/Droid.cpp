@@ -28,24 +28,26 @@
 					glm::vec3(0.0f, radius * 0.150f, 0.0f)));
 			addEntity(lid);
 
-			GLdouble yEyes = radius * 0.10f;
+			GLdouble yEyes = radius * 0.18;
+			GLdouble xEyes = radius * 0.14;
+			GLdouble zEyes = radius * 0.78;
 
 			Cone* eye1 = new Cone(radius * 0.35, radius * 0.06, radius * 0.06, 12, 24);
 			eye1->setColor(GREEN);
 			eye1->setModelMat(
 				glm::translate(glm::mat4(1.0f),
-					glm::vec3(-radius * 0.75f, yEyes, -radius * 0.25f)) *
+					glm::vec3(-xEyes, yEyes, zEyes)) *
 				glm::rotate(glm::mat4(1.0f),
-					glm::half_pi<float>(), glm::vec3(0.0f, 0.0f, 1.0f)));
+					glm::half_pi<float>(), glm::vec3(1.0f, 0.0f, 0.0f)));
 			addEntity(eye1);
 
 			Cone* eye2 = new Cone(radius * 0.35, radius * 0.06, radius * 0.06, 12, 24);
 			eye2->setColor(GREEN);
 			eye2->setModelMat(
 				glm::translate(glm::mat4(1.0f),
-					glm::vec3(-radius * 0.75f, yEyes, radius * 0.25f)) *
+					glm::vec3(xEyes, yEyes, zEyes)) *
 				glm::rotate(glm::mat4(1.0f),
-					glm::half_pi<float>(), glm::vec3(0.0f, 0.0f, 1.0f)));
+					glm::half_pi<float>(), glm::vec3(1.0f, 0.0f, 0.0f)));
 			addEntity(eye2);
 		}
 	};

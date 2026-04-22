@@ -26,6 +26,7 @@ public:
 	virtual void orbit();
 
 	virtual void render(Camera const& cam) const;
+	virtual glm::vec4 clearColor() const;
 
 	// load or unload scene data into the GPU
 	void load();
