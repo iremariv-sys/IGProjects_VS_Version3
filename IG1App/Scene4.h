@@ -10,7 +10,7 @@ public:
 	Photo* mPhoto = nullptr;
 	void init() override;
 	void update() override;
-	void savePhoto();
+	void savePhoto() override;
 	~Scene4();
 
 	//Texture* groundTex;

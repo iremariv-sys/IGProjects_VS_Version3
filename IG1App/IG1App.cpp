@@ -362,28 +362,18 @@ void IG1App::key(unsigned int key)
 		mNeedsRedisplay = true;
 		break;
 
+	
 	case 'F':
-	{
-		Scene4* s = dynamic_cast<Scene4*>(mScenes[mCurrentScene]);
-		if (s && s->mPhoto)
-			s->savePhoto();
+		mScenes[mCurrentScene]->savePhoto();
 		break;
-	}
+
 	case 'f':
-	{
-		Scene8* s8 = dynamic_cast<Scene8*>(mScenes[mCurrentScene]);
-		if (s8 != nullptr)
-			s8->rotate();
+		mScenes[mCurrentScene]->rotate();
 		break;
-	}
 
 	case 'g':
-	{
-		Scene8* s8 = dynamic_cast<Scene8*>(mScenes[mCurrentScene]);
-		if (s8 != nullptr)
-			s8->orbit();
+		mScenes[mCurrentScene]->orbit();
 		break;
-	}
 	break;
 	//Apartado 46
 	case GLFW_KEY_A:

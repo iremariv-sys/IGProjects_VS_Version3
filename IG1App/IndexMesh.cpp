@@ -97,8 +97,8 @@ IndexMesh* IndexMesh::generateByRevolution(
     GLuint segmentCount = closedProfile ? nProfile : (nProfile - 1);
 	for (GLuint i = 0; i < nSamples; ++i) {
 		GLuint curr = i * nProfile;
-     //GLuint next = (i + 1) * nProfile;
-		GLuint next = ((i + 1) % nSamples) * nProfile;
+     GLuint next = (i + 1) * nProfile;
+		//GLuint next = ((i + 1) % nSamples) * nProfile;
 
          for (GLuint j = 0; j < segmentCount; ++j) {
             GLuint j2 = closedProfile ? (j + 1) % nProfile : j + 1;

@@ -24,7 +24,7 @@ public:
 	//apartado 69
 	virtual void rotate();
 	virtual void orbit();
-
+	virtual void savePhoto();
 	virtual void render(Camera const& cam) const;
 	virtual glm::vec4 clearColor() const;
 
