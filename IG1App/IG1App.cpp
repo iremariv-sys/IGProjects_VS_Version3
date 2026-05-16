@@ -63,43 +63,44 @@ IG1App::init()
 	mViewPort = new Viewport(mWinW, mWinH);
 	mCamera = new Camera(mViewPort);
 	mCamera2 = new Camera(mViewPort);
-	mScenes.push_back(new Scene);
-	mScenes.push_back(new Scene1);
-	mScenes.push_back(new Scene2);
-	mScenes.push_back(new Scene3);
-	mScenes.push_back(new Scene4);
-	mScenes.push_back(new Scene5);
-	mScenes.push_back(new Scene6);
-	mScenes.push_back(new Scene7);
-	mScenes.push_back(new Scene8);
-	mScenes.push_back(new Scene9);
+	//mScenes.push_back(new Scene);
+	mScenes.push_back(new Scene0());
+	//mScenes.push_back(new Scene1);
+	//mScenes.push_back(new Scene2);
+	//mScenes.push_back(new Scene3);
+	//mScenes.push_back(new Scene4);
+	//mScenes.push_back(new Scene5);
+	//mScenes.push_back(new Scene6);
+	//mScenes.push_back(new Scene7);
+	//mScenes.push_back(new Scene8);
+	//mScenes.push_back(new Scene9);
 
-	mCamera->set2D();
-	mCamera2->set2D();
+	mCamera->set3D();
+	mCamera2->set3D();
 
 	mScenes[0]->init();
-	mScenes[1]->init();
-	mScenes[2]->init();
-	mScenes[3]->init();
-	mScenes[4]->init();
-	mScenes[5]->init();
-	mScenes[6]->init();
-	mScenes[7]->init();
-	mScenes[8]->init();
-	mScenes[9]->init();
+	//mScenes[1]->init();
+	//mScenes[2]->init();
+	//mScenes[3]->init();
+	//mScenes[4]->init();
+	//mScenes[5]->init();
+	//mScenes[6]->init();
+	//mScenes[7]->init();
+	//mScenes[8]->init();
+	//mScenes[9]->init();
 	//mScenes[mCurrentScene]->load();
 
 	// Cargar todas en GPU 
 	mScenes[0]->load();
-	mScenes[1]->load();
-	mScenes[2]->load();
-	mScenes[3]->load();
-	mScenes[4]->load();
-	mScenes[5]->load();
-	mScenes[6]->load();
-	mScenes[7]->load();
-	mScenes[8]->load();
-	mScenes[9]->load();
+	//mScenes[1]->load();
+	//mScenes[2]->load();
+	//mScenes[3]->load();
+	//mScenes[4]->load();
+	//mScenes[5]->load();
+	//mScenes[6]->load();
+	//mScenes[7]->load();
+	//mScenes[8]->load();
+	//mScenes[9]->load();
 }
 void
 IG1App::iniWinOpenGL()
@@ -287,9 +288,6 @@ void IG1App::key(unsigned int key)
 		camera->set2D();
 		break;
 
-	//case 'u':
-	//	mScenes[mCurrentScene]->update();
-	//	break;
 	case 'u':
 		mScenes[activeSceneIdx()]->update();  // escena del viewport bajo el cursor
 		break;
@@ -346,9 +344,9 @@ void IG1App::key(unsigned int key)
 		camera->moveFB(-10);
 		break;
 
-	//case 'p':
-	//	mCamera->changePrj();//Cambiar la proyeccion Ortogonal a Perpectiva Apartado 43
-	//	break;
+		//case 'p':
+		//	mCamera->changePrj();//Cambiar la proyeccion Ortogonal a Perpectiva Apartado 43
+		//	break;
 	case 'p':
 		activeCamera()->changePrj();          // proyección del viewport bajo el cursor
 		break;
@@ -362,7 +360,7 @@ void IG1App::key(unsigned int key)
 		mNeedsRedisplay = true;
 		break;
 
-	
+
 	case 'F':
 		mScenes[mCurrentScene]->savePhoto();
 		break;
@@ -374,8 +372,8 @@ void IG1App::key(unsigned int key)
 	case 'g':
 		mScenes[mCurrentScene]->orbit();
 		break;
-	break;
-	//Apartado 46
+
+		//Apartado 46
 	case GLFW_KEY_A:
 		camera->orbit(-5, 0);
 		mNeedsRedisplay = true;
@@ -395,12 +393,30 @@ void IG1App::key(unsigned int key)
 		camera->orbit(0, -1);
 		mNeedsRedisplay = true;
 		break;
+	case 'r':
+		mScenes[mCurrentScene]->toggleDirLight();
+		break;
+
 	case 'n':
 	case 'N': // apartado 63
 		ColorMaterialEntity::toggleShowNormals();
 		mNeedsRedisplay = true;
 		break;
-
+		//Apartado 77
+	case 't':
+		mScenes[mCurrentScene]->togglePosLight();
+		mNeedsRedisplay = true;
+		break;
+		//Apartado 78
+	case 'y':
+		mScenes[mCurrentScene]->toggleSpotLight();
+		mNeedsRedisplay = true;
+		break;
+		//Apartado 79
+	case 'h':
+		mScenes[mCurrentScene]->toggleBellyLight();
+		mNeedsRedisplay = true;
+		break;
 	default:
 		if (key >= '0' && key <= '9') {
 			if (changeScene(key - '0')) break;

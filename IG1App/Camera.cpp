@@ -51,18 +51,37 @@ void Camera::set2D()
 
 void Camera::set3D()
 {
-    // Posición original del proyecto IG1
-    mEye = glm::vec3(500.0f, 500.0f, 500.0f);
-    mLook = glm::vec3(0.0f, 0.0f, 0.0f);
-    //mUpward = glm::vec3(0.0f, 1.0f, 0.0f);
+    //// Posición original del proyecto IG1
+    //mEye = glm::vec3(500.0f, 500.0f, 500.0f);
+    //mLook = glm::vec3(0.0f, 0.0f, 0.0f);
+    ////mUpward = glm::vec3(0.0f, 1.0f, 0.0f);
+    //mUp = glm::vec3(0.0f, 1.0f, 0.0f);
+    //// Cálculo coherente de radio y ángulo
+    //glm::vec3 v = mEye - mLook;
+    //mRadio = glm::length(v);
+    //mAng = atan2(v.z, v.x);
+
+    //setVM();
+    //setPM();
+    
+    //mEye = glm::vec3(1300.0f, 800.0f, 1300.0f);
+    //mLook = glm::vec3(0.0f, 100.0f, 0.0f);
+    //mUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+    bOrto = false;
+
+    // Esquina del laboratorio, ligeramente elevada
+    mEye = glm::vec3(-1300.0f, 480.0f, 1300.0f);
+    mLook = glm::vec3(0.0f, 150.0f, 0.0f);
     mUp = glm::vec3(0.0f, 1.0f, 0.0f);
-    // Cálculo coherente de radio y ángulo
+
     glm::vec3 v = mEye - mLook;
     mRadio = glm::length(v);
     mAng = atan2(v.z, v.x);
 
     setVM();
     setPM();
+    
 }
 
 
@@ -123,28 +142,58 @@ void Camera::setScale(GLdouble s)
 }
 
 
+//
+//void Camera::setPM()
+//{
+//    if (bOrto) {
+//        // Proyección ortogonal — usa mScaleFact para el zoom
+//        mProjMat = ortho(xLeft * mScaleFact,
+//            xRight * mScaleFact,
+//            yBot * mScaleFact,
+//            yTop * mScaleFact,
+//            mNearVal, mFarVal);
+//    }
+//    else {
+//        float aspect = mViewPort->width() / float(mViewPort->height());
+//
+//        //FOV escalado con mScaleFact: más pequeño = zoom in, más grande = zoom out
+//        float fov = glm::clamp(
+//            glm::radians(50.0f) * static_cast<float>(mScaleFact),
+//            glm::radians(5.0f),    // límite mínimo (zoom in)
+//            glm::radians(170.0f)   // límite máximo (zoom out)
+//        );
+//
+//        mProjMat = glm::perspective(fov, aspect, mNearVal, mFarVal);
+//    }
+//}
 
 void Camera::setPM()
 {
-    if (bOrto) {
-        // Proyección ortogonal — usa mScaleFact para el zoom
-        mProjMat = ortho(xLeft * mScaleFact,
+    float aspect = mViewPort->width() / float(mViewPort->height());
+
+    if (bOrto)
+    {
+        mProjMat = glm::ortho(
+            xLeft * mScaleFact,
             xRight * mScaleFact,
             yBot * mScaleFact,
             yTop * mScaleFact,
-            mNearVal, mFarVal);
-    }
-    else {
-        float aspect = mViewPort->width() / float(mViewPort->height());
-
-        //FOV escalado con mScaleFact: más pequeño = zoom in, más grande = zoom out
-        float fov = glm::clamp(
-            glm::radians(50.0f) * static_cast<float>(mScaleFact),
-            glm::radians(5.0f),    // límite mínimo (zoom in)
-            glm::radians(170.0f)   // límite máximo (zoom out)
+            mNearVal,
+            mFarVal
         );
+    }
+    else
+    {
+        float fov = glm::radians(45.0f);
 
-        mProjMat = glm::perspective(fov, aspect, mNearVal, mFarVal);
+        mProjMat = glm::perspective(
+            fov,
+            aspect,
+            //0.1f,
+            //100.0f
+            1.0f,
+            5000.0f
+        );
     }
 }
 
@@ -258,11 +307,11 @@ void Camera::upload() const
     mViewPort->upload();
     uploadPM();
 
-    Shader* lightShader = Shader::get("simple_light");
-    lightShader->use();
+    //Shader* lightShader = Shader::get("simple_light");
+    //lightShader->use();
 
-    glm::vec4 lightDirView = mViewMat * glm::vec4(-1.0f, -1.5f, -1.25f, 0.0f);
-    lightDirView = glm::vec4(glm::normalize(glm::vec3(lightDirView)), 0.0f);
+    //glm::vec4 lightDirView = mViewMat * glm::vec4(-1.0f, -1.5f, -1.25f, 0.0f);
+    //lightDirView = glm::vec4(glm::normalize(glm::vec3(lightDirView)), 0.0f);
 
-    lightShader->setUniform("lightDir", lightDirView);
+    //lightShader->setUniform("lightDir", lightDirView);
 }

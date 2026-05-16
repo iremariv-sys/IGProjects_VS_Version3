@@ -16,7 +16,7 @@ Light::Light(const std::string& name, int id)
 
 Light::~Light()
 {
-}
+};
 
 void Light::upload(Shader& shader, glm::mat4 const& modelViewMat) const
 {

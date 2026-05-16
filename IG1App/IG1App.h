@@ -7,6 +7,7 @@
 #include "Material.h"
 #include "Camera.h"
 #include "Scene.h"
+#include "Scene0.h"
 #include "Viewport.h"
 #include "Scene1.h"
 #include "Scene2.h"
@@ -17,6 +18,10 @@
 #include "Scene7.h"
 #include "Scene8.h"
 #include "Scene9.h"
+
+
+#include <vector>
+
 
 class IG1App
 {

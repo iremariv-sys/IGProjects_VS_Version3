@@ -92,4 +92,6 @@ protected:
 	GLfloat cutoff = 60, outerCutoff = 120;
 };
 
+
+
 #endif //_H_Light_H_
