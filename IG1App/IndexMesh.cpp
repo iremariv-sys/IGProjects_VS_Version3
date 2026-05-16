@@ -258,3 +258,120 @@ IndexMesh* IndexMesh::generateIndexedBox8(GLdouble l)
 	m->buildNormalVectors();
 	return m;
 }
+
+IndexMesh* IndexMesh::generateHexagonalPrism(GLdouble radius, GLdouble height)
+{
+	assert(radius > 0.0);
+	assert(height > 0.0);
+
+	IndexMesh* m = new IndexMesh();
+	m->mPrimitive = GL_TRIANGLES;
+
+	const GLfloat r = GLfloat(radius);
+	const GLfloat h = GLfloat(height * 0.5);
+	const GLfloat step = glm::two_pi<GLfloat>() / 6.0f;
+	const GLfloat start = glm::radians(30.0f);
+
+	m->vVertices.reserve(38);
+	m->vNormals.reserve(38);
+	m->vTexCoords.reserve(38);
+	m->vIndexes.reserve(72);
+
+	glm::vec3 topRing[6];
+	glm::vec3 bottomRing[6];
+	glm::vec2 ringUV[6];
+
+	// Centro superior
+	m->vVertices.emplace_back(0.0f, h, 0.0f);
+	m->vNormals.emplace_back(0.0f, 1.0f, 0.0f);
+	m->vTexCoords.emplace_back(0.5f, 0.5f);
+
+	// Anillo superior e inferior base
+	for (GLuint i = 0; i < 6; ++i) {
+		GLfloat ang = start + step * GLfloat(i);
+		GLfloat x = r * cos(ang);
+		GLfloat z = r * sin(ang);
+
+		topRing[i] = glm::vec3(x, h, z);
+		bottomRing[i] = glm::vec3(x, -h, z);
+
+		ringUV[i] = glm::vec2(
+			0.5f + x / (2.0f * r),
+			0.5f + z / (2.0f * r)
+		);
+	}
+
+	for (GLuint i = 0; i < 6; ++i) {
+		m->vVertices.push_back(topRing[i]);
+		m->vNormals.emplace_back(0.0f, 1.0f, 0.0f);
+		m->vTexCoords.push_back(ringUV[i]);
+	}
+
+	// Centro inferior
+	m->vVertices.emplace_back(0.0f, -h, 0.0f);
+	m->vNormals.emplace_back(0.0f, -1.0f, 0.0f);
+	m->vTexCoords.emplace_back(0.5f, 0.5f);
+
+	for (GLuint i = 0; i < 6; ++i) {
+		m->vVertices.push_back(bottomRing[i]);
+		m->vNormals.emplace_back(0.0f, -1.0f, 0.0f);
+		m->vTexCoords.push_back(ringUV[i]);
+	}
+
+	// Caras laterales duplicadas para mantener aristas duras
+	for (GLuint i = 0; i < 6; ++i) {
+		GLuint next = (i + 1) % 6;
+
+		GLfloat midAng = start + step * (GLfloat(i) + 0.5f);
+		glm::vec3 n = glm::normalize(glm::vec3(cos(midAng), 0.0f, sin(midAng)));
+
+		// topA, bottomA, bottomB, topB
+		m->vVertices.emplace_back(topRing[i]);
+		m->vNormals.emplace_back(n);
+		m->vTexCoords.emplace_back(0.0f, 1.0f);
+
+		m->vVertices.emplace_back(bottomRing[i]);
+		m->vNormals.emplace_back(n);
+		m->vTexCoords.emplace_back(0.0f, 0.0f);
+
+		m->vVertices.emplace_back(bottomRing[next]);
+		m->vNormals.emplace_back(n);
+		m->vTexCoords.emplace_back(1.0f, 0.0f);
+
+		m->vVertices.emplace_back(topRing[next]);
+		m->vNormals.emplace_back(n);
+		m->vTexCoords.emplace_back(1.0f, 1.0f);
+	}
+
+	// Índices
+	// Topo: 0 es centro superior, 1..6 anillo superior
+	for (GLuint i = 0; i < 6; ++i) {
+		GLuint next = (i + 1) % 6;
+		m->vIndexes.push_back(0);
+		m->vIndexes.push_back(1 + i);
+		m->vIndexes.push_back(1 + next);
+	}
+
+	// Base: 7 es centro inferior, 8..13 anillo inferior
+	for (GLuint i = 0; i < 6; ++i) {
+		GLuint next = (i + 1) % 6;
+		m->vIndexes.push_back(7);
+		m->vIndexes.push_back(8 + next);
+		m->vIndexes.push_back(8 + i);
+	}
+
+	// Laterales: 14..37
+	for (GLuint i = 0; i < 6; ++i) {
+		GLuint base = 14 + i * 4;
+		m->vIndexes.push_back(base);
+		m->vIndexes.push_back(base + 1);
+		m->vIndexes.push_back(base + 2);
+
+		m->vIndexes.push_back(base);
+		m->vIndexes.push_back(base + 2);
+		m->vIndexes.push_back(base + 3);
+	}
+
+	m->mNumVertices = GLuint(m->vVertices.size());
+	return m;
+}

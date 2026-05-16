@@ -14,6 +14,7 @@ public:
 		GLuint nSamples,
      GLfloat angleMax = 2.0f * std::numbers::pi_v<GLfloat>,
 		bool closedProfile = false);
+	static IndexMesh* generateHexagonalPrism(GLdouble radius, GLdouble height);
 
 	void buildNormalVectors(); // Apartado 59
 

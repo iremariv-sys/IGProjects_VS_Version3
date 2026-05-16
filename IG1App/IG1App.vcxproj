@@ -72,6 +72,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ADNStructure.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="BoxOutline.h" />
     <ClInclude Include="Camera.h" />
@@ -87,6 +88,7 @@
     <ClInclude Include="GlassParapet.h" />
     <ClInclude Include="Grass.h" />
     <ClInclude Include="Ground.h" />
+    <ClInclude Include="HexagonalBase.h" />
     <ClInclude Include="IG1App.h" />
     <ClInclude Include="IndexedBox.h" />
     <ClInclude Include="IndexMesh.h" />
@@ -122,6 +124,7 @@
     <ClInclude Include="Viewport.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ADNStructure.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="BoxOutline.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -137,6 +140,7 @@
     <ClCompile Include="GlassParapet.cpp" />
     <ClCompile Include="Grass.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="HexagonalBase.cpp" />
     <ClCompile Include="IndexedBox.cpp" />
     <ClCompile Include="IndexMesh.cpp" />
     <ClCompile Include="LaboratoryRoom.cpp" />
