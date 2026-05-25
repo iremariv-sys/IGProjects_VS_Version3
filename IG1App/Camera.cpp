@@ -71,7 +71,7 @@ void Camera::set3D()
     bOrto = false;
 
     // Esquina del laboratorio, ligeramente elevada
-    mEye = glm::vec3(-1300.0f, 480.0f, 1300.0f);
+    mEye = glm::vec3(-1300.0f, 490.0f, 1300.0f);
     mLook = glm::vec3(0.0f, 150.0f, 0.0f);
     mUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -141,31 +141,6 @@ void Camera::setScale(GLdouble s)
     setPM();   // recalcula la proyección con el nuevo zoom Apartado 42
 }
 
-
-//
-//void Camera::setPM()
-//{
-//    if (bOrto) {
-//        // Proyección ortogonal — usa mScaleFact para el zoom
-//        mProjMat = ortho(xLeft * mScaleFact,
-//            xRight * mScaleFact,
-//            yBot * mScaleFact,
-//            yTop * mScaleFact,
-//            mNearVal, mFarVal);
-//    }
-//    else {
-//        float aspect = mViewPort->width() / float(mViewPort->height());
-//
-//        //FOV escalado con mScaleFact: más pequeño = zoom in, más grande = zoom out
-//        float fov = glm::clamp(
-//            glm::radians(50.0f) * static_cast<float>(mScaleFact),
-//            glm::radians(5.0f),    // límite mínimo (zoom in)
-//            glm::radians(170.0f)   // límite máximo (zoom out)
-//        );
-//
-//        mProjMat = glm::perspective(fov, aspect, mNearVal, mFarVal);
-//    }
-//}
 
 void Camera::setPM()
 {
@@ -307,11 +282,5 @@ void Camera::upload() const
     mViewPort->upload();
     uploadPM();
 
-    //Shader* lightShader = Shader::get("simple_light");
-    //lightShader->use();
-
-    //glm::vec4 lightDirView = mViewMat * glm::vec4(-1.0f, -1.5f, -1.25f, 0.0f);
-    //lightDirView = glm::vec4(glm::normalize(glm::vec3(lightDirView)), 0.0f);
-
-    //lightShader->setUniform("lightDir", lightDirView);
+  
 }

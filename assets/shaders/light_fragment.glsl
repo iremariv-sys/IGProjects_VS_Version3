@@ -129,7 +129,7 @@ vec3 calcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 
 
 const int NR_DIR_LIGHTS = 2;
-const int NR_POS_LIGHTS = 4;
+const int NR_POS_LIGHTS = 7;
 const int NR_SPOT_LIGHTS = 4;
 
 uniform DirLight dirLights[NR_DIR_LIGHTS];

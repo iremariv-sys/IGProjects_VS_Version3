@@ -1,3 +1,4 @@
+
 #include "ADNStructure.h"
 #include "IndexedBox.h"
 
@@ -5,7 +6,7 @@
 
 ADNStructure::ADNStructure()
 {
-    const int levels = 26;
+    const int levels = 28;
     const float stepY = 18.0f;
     const float radius = 50.0f;
     const float cubeSize = 18.0f;
@@ -24,12 +25,12 @@ ADNStructure::ADNStructure()
         float z2 = -z1;
 
         IndexedBox* left = new IndexedBox(cubeSize);
-        left->setColor(glm::vec4(0.15f, 0.55f, 0.95f, 1.0f)); //AZUL
+        left->setColor(glm::vec4(0.06f, 0.20f, 0.55f, 1.0f));
         left->setModelMat(glm::translate(glm::mat4(1.0f), glm::vec3(x1, y, z1)));
         addEntity(left);
 
         IndexedBox* right = new IndexedBox(cubeSize);
-        right->setColor(glm::vec4(0.85f, 0.20f, 0.20f, 1.0f)); //ROJO
+        right->setColor(glm::vec4(0.55f, 0.06f, 0.06f, 1.0f));
         right->setModelMat(glm::translate(glm::mat4(1.0f), glm::vec3(x2, y, z2)));
         addEntity(right);
 
@@ -38,7 +39,7 @@ ADNStructure::ADNStructure()
         float barAngle = atan2(dir.z, dir.x);
 
         IndexedBox* bar = new IndexedBox(1.0);
-        bar->setColor(glm::vec4(0.25f, 0.85f, 0.55f, 1.0f)); //VERDE
+        bar->setColor(glm::vec4(0.25f, 0.85f, 0.55f, 1.0f));
         bar->setModelMat(
             glm::translate(glm::mat4(1.0f), mid) *
             glm::rotate(glm::mat4(1.0f), barAngle, glm::vec3(0.0f, 1.0f, 0.0f)) *
@@ -50,6 +51,11 @@ ADNStructure::ADNStructure()
 void ADNStructure::update()
 {
     mRotationY += mSpeed;
+    if (mRotationY >= 360.0f) {
+        mRotationY -= 360.0f;
+    }
+
     mModelMat =
+        mBaseMat *
         glm::rotate(glm::mat4(1.0f), glm::radians(mRotationY), glm::vec3(0.0f, 1.0f, 0.0f));
 }

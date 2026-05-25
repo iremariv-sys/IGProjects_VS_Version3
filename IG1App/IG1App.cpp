@@ -52,6 +52,20 @@ IG1App::run() // enters the main event processing loop
 	destroy();
 }
 
+//void IG1App::run()
+//{
+//	if (mWindow == 0)
+//		init();
+//
+//	while (!glfwWindowShouldClose(mWindow)) {
+//		mScenes[mCurrentScene]->update();
+//		display();
+//		glfwPollEvents();
+//	}
+//
+//	destroy();
+//}
+
 void
 IG1App::init()
 {
@@ -89,6 +103,8 @@ IG1App::init()
 	//mScenes[8]->init();
 	//mScenes[9]->init();
 	//mScenes[mCurrentScene]->load();
+
+	mScenes[0]->update();
 
 	// Cargar todas en GPU 
 	mScenes[0]->load();
@@ -243,15 +259,6 @@ void IG1App::display() const
 	glfwSwapBuffers(mWindow);
 }
 
-/*/IG1App::display() const
-{ // double buffering
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clears the back buffer
-	
-	mScenes[mCurrentScene]->render(*mCamera); // uploads the viewport and camera to the GPU
-
-	glfwSwapBuffers(mWindow); // swaps the front and back buffer
-}/**/
 
 void
 IG1App::resize(int newWidth, int newHeight)
@@ -344,9 +351,6 @@ void IG1App::key(unsigned int key)
 		camera->moveFB(-10);
 		break;
 
-		//case 'p':
-		//	mCamera->changePrj();//Cambiar la proyeccion Ortogonal a Perpectiva Apartado 43
-		//	break;
 	case 'p':
 		activeCamera()->changePrj();          // proyección del viewport bajo el cursor
 		break;
@@ -394,7 +398,13 @@ void IG1App::key(unsigned int key)
 		mNeedsRedisplay = true;
 		break;
 	case 'r':
+		mScenes[mCurrentScene]->togglePosLight();
+		mNeedsRedisplay = true;
+		break;
+
+	case 'R':
 		mScenes[mCurrentScene]->toggleDirLight();
+		mNeedsRedisplay = true;
 		break;
 
 	case 'n':

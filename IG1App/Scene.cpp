@@ -18,6 +18,8 @@ Scene::init()
 	// Texture
 	gObjects.push_back(new RGBAxes(400.0));
 
+	if (!gLights.empty())
+		gLights[0]->setEnabled(false);
 
 	DirLight* dirLight = new DirLight(0);
 	dirLight->setAmb(glm::vec3(0.25f, 0.25f, 0.25f));
@@ -54,11 +56,6 @@ Scene::load()
 {
 	for (Abs_Entity* obj : gObjects)
 		obj->load();
-
-	//Apartado 76
-	//for (Light* light : gLights)
-	//	light->setEnabled(true);
-	
 }
 
 void
@@ -86,16 +83,6 @@ Scene::resetGL()
 	glDisable(GL_DEPTH_TEST);     // disable Depth test
 }
 
-//void
-//Scene::render(Camera const& cam) const
-//{
-//	cam.upload();
-//	for (Abs_Entity* el : gObjects) {
-//		el->render(cam.viewMat());
-//	
-//	}
-//
-//}
 void Scene::render(Camera const& cam) const
 {
 	cam.upload();
@@ -115,7 +102,8 @@ void Scene::uploadLights(const glm::mat4& viewMat) const
 	lightShader->use();
 
 	const int NR_DIR_LIGHTS = 2;
-	const int NR_POS_LIGHTS = 4;
+	//const int NR_POS_LIGHTS = 4;
+	const int NR_POS_LIGHTS = 7;
 	const int NR_SPOT_LIGHTS = 4;
 
 	for (int i = 0; i < NR_DIR_LIGHTS; ++i)

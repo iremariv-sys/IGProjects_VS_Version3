@@ -276,32 +276,7 @@ Mesh* Mesh::generateRGBCubeTriangles(GLdouble length)
 	return mesh;
 };
 
-//Mesh* Mesh::generateTexturedRectangle(GLdouble w, GLdouble h)
-//{
-//	Mesh* mesh = new Mesh();
-//
-//	mesh->mPrimitive = GL_TRIANGLE_STRIP;
-//	mesh->mNumVertices = 4;
-//
-//	GLdouble x = w / 2.0;
-//	GLdouble y = h / 2.0;
-//
-//	mesh->vVertices = {
-//		{-x,  y, 0.0},
-//		{-x, -y, 0.0},
-//		{ x,  y, 0.0},
-//		{ x, -y, 0.0}
-//	};
-//
-//	mesh->vTexCoords = {
-//		{0.0f, 1.0f},
-//		{0.0f, 0.0f},
-//		{1.0f, 1.0f},
-//		{1.0f, 0.0f}
-//	};
-//
-//	return mesh;
-//}
+
 
 
 Mesh* Mesh::generaRectangleTexCor(GLdouble w, GLdouble h, GLuint rw, GLuint rh)
@@ -365,42 +340,6 @@ Mesh* Mesh::generaRectangleTexCor(GLdouble w, GLdouble h, GLuint rw, GLuint rh)
 	//}
 
 
-//Mesh*
-//Mesh::generateBoxOutlineTexCor(GLdouble length)
-//{
-//	Mesh* m = new Mesh();
-//	m->mPrimitive = GL_TRIANGLE_STRIP;
-//	m->mNumVertices = 10;
-//
-//	double h = length / 2.0;
-//
-//	glm::vec3 V0(-h, h, h);
-//	glm::vec3 V1(h, h, h);
-//	glm::vec3 V2(h, h, -h);
-//	glm::vec3 V3(-h, h, -h);
-//	glm::vec3 V4(-h, -h, h);
-//	glm::vec3 V5(h, -h, h);
-//	glm::vec3 V6(h, -h, -h);
-//	glm::vec3 V7(-h, -h, -h);
-//
-//	m->vVertices = {
-//		V0, V4,
-//		V1, V5,
-//		V2, V6,
-//		V3, V7,
-//		V0, V4
-//	};
-//
-//	m->vTexCoords = {
-//		{0.0f, 1.0f}, {0.0f, 0.0f},
-//		{1.0f, 1.0f}, {1.0f, 0.0f},
-//		{2.0f, 1.0f}, {2.0f, 0.0f},
-//		{3.0f, 1.0f}, {3.0f, 0.0f},
-//		{4.0f, 1.0f}, {4.0f, 0.0f}
-//	};
-//
-//	return m;
-//}
 Mesh* Mesh::generateBoxOutlineTexCor(GLdouble length)
 {
 	Mesh* m = new Mesh();

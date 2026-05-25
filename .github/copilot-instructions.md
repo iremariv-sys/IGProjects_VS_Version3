@@ -8,3 +8,4 @@
 ## Project-Specific Rules
 - Mantener el método `setColor` en `ColorMaterialEntity` durante la migración a material, en lugar de eliminarlo o reemplazarlo por una API distinta.
 - Al agregar iluminación al proyecto, no modificar las escenas, las formas ni la lógica de normales; solo realizar los cambios estrictamente necesarios para las luces.
+- Aclarar si una pregunta sobre «malla de revolución» se refiere a `ADNStructure` o al proyecto en general; `ADNStructure` usa cajas, mientras que objetos como `Cone`/`Disk` usan mallas por revolución. Si hay ambigüedad, pedir aclaración.
